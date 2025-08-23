@@ -1,11 +1,10 @@
 import time
-
 def display_specific_items(chores:list, status:str):
   """
   Responsible of displaying items given a specific status.
-  
+
   Args:
-    chores(list): the list of dictionnaries, say chores (required).
+    chores(list): The list of dictionaries, say chores (required).
     status(str): The status of the items we want to display (required).
 
   Returns:
@@ -13,35 +12,35 @@ def display_specific_items(chores:list, status:str):
   """
   status = status.lower()
   index = 0
-  if status in "all":
+  if status == "all":
     print("\n=======================\n=======ALL CHORES=======\n")
     for elm in chores:
-      print(f"{index+1}. {elm['name']} || status : {elm['status']}")
+      print(f"{index+1}. {elm['name']} || status: {elm['status']}")
       index+=1
     print("\n=======================")
   else:
     print(f"\n=======================\n======={status.upper()} CHORES=======\n")
     for elm in chores:
-      if elm["status"] == status:
-        print(f"{index+1}. {elm['name']} || status : {elm['status']}")
+      if elm['status'] == status:
+        print(f"{index+1}. {elm['name']} || status: {elm['status']}")
         index+=1
     print("\n=======================")
   time.sleep(3)
 
 def request_to_display_items(chores:list):
   """
-  The functions manages the interaction with the user before trigerring the process of displaying items to the user.
+  Manages the interaction with the user to triger a specific display method.
 
   Args:
-    chores(list): the list of dictionnaries, say chores (required).
+    chores(list): the list of dictionaries, say chores (required).
   
   Returns:
     None
   """
   while True:
-    user_input_1 = input(">> Which items do you want to display :\n1. All\n2.Completed\n3.Pending\n===>")
+    user_input_1 = input(">> Type of items you would like to display:\n1. All\n2. Completed\n3. Pending\n===>")
     if user_input_1 not in ['1', '2', '3']:
-      print("ERROR : Please enter a valide input!")
+      raise ValueError("ERROR: Please enter a valid input!")
     elif user_input_1 == '1':
       display_specific_items(chores=chores, status="All")
       return

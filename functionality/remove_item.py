@@ -1,16 +1,16 @@
 import time
 from .display_item import display_specific_items
 
-def process_to_remove_item(chores:list,user_input):
+def process_to_remove_item(chores:list, user_input):
   """
-  Triggers the process of removing according to the input of the user.
+  Remove an item according to the user input.
 
   Args:
-    user_input(int, str): the value enterd by the user
-    chores(list): the list of chores, each chore as a dictionnary (required).
+    user_input(int, str): the value intered by the user
+    chores(list): the list of chores, say dictionaries (required).
   
   Returns:
-    success(bool): if the inner process of deleting was completed successfully or not.
+    success(bool): removing completed or not.
   """
   if isinstance(user_input, int):
     chores.pop(user_input - 1)
@@ -23,63 +23,72 @@ def process_to_remove_item(chores:list,user_input):
         success = True
       else:
         success = False
-
     except Exception as e:
-      print(f">> ERROR: {e}")
+      print(f"ERROR: {e}")
       success = False
   return success
 
 def remove_item(chores:list):
   """
-  Manages the interaction with user of the way of removing a single item to the to-do list.
-  
+  Continue interacting with the user to retrieve necessary informations before triggereing the removing
+
   Args:
-    Name(str): The name of the item (required).
-    chores(list): the list of chores, each chore as a dictionnary (required).
+    chores(list): the list of chores, say dictionaries (required).
   
   Returns:
-    success(bool): if the process of deleting was completed successfully or not.
+    success(bool): interaction and process completed or not.
   """
-  user_input_2 = input(">> Which chore would you like to remove (select by typing the current index or its exact name)? ")
+  user_input_2 = input(">>Which activity would you like to remove (select by typing its exact name or current index) ?")
+  msg = f"ERROR: The entered number should be a valid one between 1 and {len(chores)}"
   try:
     user_input_as = int(user_input_2)
-  except ValueError:
-    user_input_as = user_input_2
+    valid_integer_input = 1 <= user_input_as <= len(chores)
+    if not valid_integer_input:
+      raise ValueError(msg)
+  except ValueError as e:
+    if str(e) == msg: 
+      success = False
+      return success
+    else:
+      user_input_as = user_input_2
   finally:
-    removing_completed = process_to_remove_item(chores=chores,user_input=user_input_as)
+    removing_completed = process_to_remove_item(chores=chores, user_input=user_input_as)
     if removing_completed:
       success = True
     else:
       success = False
-  return success
+    return success
 
 def request_to_remove_item(chores:list):
   """
-  This manages the interaction with the user of removing an item.
+  Start the interaction with the user to remove an item.
 
   Args:
-    chores(list): the list of chores, each chore as a dictionnary (required).
-
+    chores(list): list of chores, say dictionaries (required).
+  
   Returns:
     None
   """
   while True:
-    user_input_1 = input(">> Are you sure you would like to remove a chore ? [y/n] : ")
-    if user_input_1.lower() == 'y':
-      display_specific_items(chores=chores, status="All")
-      item_removed = remove_item(chores=chores)
-      if item_removed:
-        print(">> Chore removed successfully !")
-        display_specific_items(chores=chores, status="All")
+    try:
+      user_input_1 = input(">> Are you sure you would like to remove an activity ? [y/n]: ")
+      user_input_1.lower()
+      if user_input_1 not in ['y', 'n']:
+        raise ValueError("ERROR: You should enter a required number !")
+      elif user_input_1 == 'y':
+        display_specific_items(chores=chores, status="all")
+        item_removed = remove_item(chores=chores)
+        if item_removed:
+          print(">> Activity removed successfully !")
+          display_specific_items(chores=chores, status="all")
+          time.sleep(2)
+        return
+      else:
         print(">> Okay ! Let's go back to the menu...")
         time.sleep(2)
-      return
-    elif user_input_1.lower() == 'n': 
-      print(">> Okay ! Let's go back to the menu...")
-      time.sleep(2)
-      return
-    else:
-      print("ERROR : Please write a required letter.")
+        return
+    except ValueError as e:
+      print(e)
 
 if __name__ == "__main__":
   request_to_remove_item()

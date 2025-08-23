@@ -4,13 +4,7 @@ from functionality import add_item as ai, display_item as di, remove_item as ri,
 
 def main():
   """
-  Welcoming the user and displaying all functionalities of the app
-  
-  Args:
-    None
-  
-  Returns:
-    None
+  Main function for welcoming the user and linking to functionalities of the app.
   """
   while True:
     user_choice = slt.first_welcome_user()
@@ -22,7 +16,7 @@ def main():
       print("\nADD CHORE\n==========")
       time.sleep(2)
       ai.request_to_add_item(chores=chores)
-    elif user_choice == '3':
+    elif user_choice == "3":
       print("\nMARK A CHORE AS COMPLETED\n========================")
       time.sleep(2)
       mc.mark_item_as_completed(chores=chores)
